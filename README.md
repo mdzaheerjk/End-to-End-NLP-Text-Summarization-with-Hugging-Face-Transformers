@@ -5,7 +5,7 @@ Develop a complete text summarization system from scratch, focusing on summarizi
 ## Project Preview
 
 <p align="center">
-  <img src="https://backend.krishnaik.in/media/project_banners/Gemini_Generated_Image_txdwpstxdwpstxdw.jpg"
+  <img src="https://d14omfvx1qlabb.cloudfront.net/krishnaik.in/media/project_banners/Gemini_Generated_Image_txdwpstxdwpstxdw.jpg"
        alt="Project Preview"
        width="600" />
 </p>
@@ -13,7 +13,7 @@ Develop a complete text summarization system from scratch, focusing on summarizi
 ## System Architecture
 
 <p align="center">
-  <img src="https://backend.krishnaik.in/media/project_architecture_diagrams/Gemini_Generated_Image_z01q0dz01q0dz01q.jpg"
+  <img src="https://d14omfvx1qlabb.cloudfront.net/krishnaik.in/media/project_architecture_diagrams/Gemini_Generated_Image_z01q0dz01q0dz01q.jpg"
        alt="System Architecture"
        width="600" />
 </p>
