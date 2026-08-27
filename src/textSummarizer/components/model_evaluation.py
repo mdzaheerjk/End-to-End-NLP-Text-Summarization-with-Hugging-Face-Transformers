@@ -28,7 +28,7 @@ class ModelEvaluation:
                              padding='max_length',return_tensors='pt')
             summaries=model.generate(input_ids=inputs['input_ids'].to(device),
                                      attention_mask=inputs['attention_mask'].to(device),
-                                     length_penalty=0.8,num_beams=8,max_length=128)
+                                     length_penalty=0.8,num_beams=2,max_length=128,early_stopping=True)
 
             decoded_summaries=[tokenizer.decode(s,skip_special_tokens=True,
                                clean_up_tokenization_spaces=True)
@@ -44,7 +44,10 @@ class ModelEvaluation:
     def evaluate(self):
         device="cuda" if torch.cuda.is_available() else "cpu"
         tokenizer=AutoTokenizer.from_pretrained(self.config.tokenizer_path)
-        model_pegasus=AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(device)
+        model_pegasus=AutoModelForSeq2SeqLM.from_pretrained(
+            self.config.model_path,
+            torch_dtype=torch.float16 if device == "cuda" else torch.float32
+        ).to(device)
 
         dataset_samsum_pt=load_from_disk(self.config.data_path)
 

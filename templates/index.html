@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Dialogue Summarizer | Google Pegasus Transformer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-title">SummarizeAI</div>
+                <div class="brand-subtitle">Google Pegasus NLP Pipeline</div>
+            </div>
+        </a>
+
+        <div class="nav-actions">
+            <a href="/docs" target="_blank" class="nav-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Swagger API
+            </a>
+            <button onclick="triggerTraining()" class="nav-link" id="trainNavBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Train Model
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="badge-tag">
+                <span>✦</span> State of the Art Transformer Model
+            </div>
+            <h1>End-to-End Text Summarization</h1>
+            <p>Summarize lengthy dialogues, meeting transcripts, and multi-speaker conversations into concise, human-like summaries.</p>
+        </section>
+
+        <div class="workspace-grid">
+            <!-- Input Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="21" y1="10" x2="3" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="21" y1="18" x2="3" y2="18"></line>
+                        </svg>
+                        Input Dialogue
+                    </div>
+                    <div class="panel-controls">
+                        <button class="pill-btn" onclick="loadSample(1)">Sample 1</button>
+                        <button class="pill-btn" onclick="loadSample(2)">Sample 2</button>
+                        <button class="pill-btn" onclick="clearInput()">Clear</button>
+                    </div>
+                </div>
+
+                <div class="text-container">
+                    <textarea id="inputText" placeholder="Enter or paste dialogue conversation here (e.g. John: Hello... Jane: Hi!)..." oninput="updateCharCount()"></textarea>
+                    <div class="char-counter" id="charCounter">0 characters</div>
+                </div>
+
+                <button id="summarizeBtn" class="btn-primary" onclick="generateSummary()">
+                    <span class="spinner" id="loadingSpinner"></span>
+                    <span id="btnText">Summarize Text</span>
+                </button>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Generated Summary
+                    </div>
+                    <div class="panel-controls">
+                        <button class="pill-btn" onclick="copySummary()" id="copyBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="output-container" id="outputContainer">
+                    <div class="empty-state" id="emptyState">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <div>Your generated abstractive summary will appear here.</div>
+                    </div>
+                    <div class="summary-result" id="summaryResult"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="status-toast" id="toast"></div>
+
+    <footer>
+        End-to-End NLP Text Summarization System • Built with FastAPI & Hugging Face Transformers
+    </footer>
+
+    <script>
+        const samples = {
+            1: "Hannah: Hey, do you have Betty's number?\\nAmanda: Lemme check.\\nHannah: <file_other>\\nAmanda: Sorry, can't find it.\\nAmanda: Ask Larry\\nAmanda: He called her last week I guess.\\nHannah: I will, thanks!",
+            2: "Olivia: Are you coming to the project meeting at 3 PM?\\nLucas: Yes, I prepared the slide deck for the NLP architecture.\\nOlivia: Great! Make sure to highlight the evaluation metrics like ROUGE score.\\nLucas: Will do! See you in conference room B."
+        };
+
+        function updateCharCount() {
+            const text = document.getElementById('inputText').value;
+            document.getElementById('charCounter').innerText = `${text.length} characters`;
+        }
+
+        function loadSample(id) {
+            const raw = samples[id] || '';
+            const textarea = document.getElementById('inputText');
+            textarea.value = raw.replace(/\\\\n/g, '\\n');
+            updateCharCount();
+            showToast(`Loaded sample ${id}`);
+        }
+
+        function clearInput() {
+            document.getElementById('inputText').value = '';
+            updateCharCount();
+            document.getElementById('emptyState').style.display = 'flex';
+            document.getElementById('summaryResult').style.display = 'none';
+            document.getElementById('summaryResult').innerText = '';
+        }
+
+        async function generateSummary() {
+            const input = document.getElementById('inputText').value.trim();
+            if (!input) {
+                showToast('Please enter some dialogue text first!');
+                return;
+            }
+
+            const btn = document.getElementById('summarizeBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('loadingSpinner');
+            const emptyState = document.getElementById('emptyState');
+            const summaryResult = document.getElementById('summaryResult');
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.innerText = 'Generating Summary...';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: input })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned status ${response.status}`);
+                }
+
+                const data = await response.json();
+                const summary = typeof data === 'string' ? data : (data.summary || data.text || JSON.stringify(data));
+
+                emptyState.style.display = 'none';
+                summaryResult.style.display = 'block';
+                summaryResult.innerText = summary;
+                showToast('Summary generated successfully!');
+            } catch (err) {
+                emptyState.style.display = 'none';
+                summaryResult.style.display = 'block';
+                summaryResult.innerText = `Error: ${err.message}`;
+                showToast('Failed to generate summary');
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.innerText = 'Summarize Text';
+            }
+        }
+
+        function copySummary() {
+            const result = document.getElementById('summaryResult').innerText;
+            if (!result) {
+                showToast('No summary to copy!');
+                return;
+            }
+            navigator.clipboard.writeText(result);
+            showToast('Summary copied to clipboard!');
+        }
+
+        async function triggerTraining() {
+            const navBtn = document.getElementById('trainNavBtn');
+            navBtn.innerText = 'Training Initiated...';
+            showToast('Training pipeline started in background');
+            try {
+                fetch('/train');
+            } catch (e) {}
+            setTimeout(() => {
+                navBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Train Model';
+            }, 3000);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
