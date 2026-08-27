@@ -2,4 +2,23 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL=
+  source_URL: https://github.com/mdzaheerjk/End-to-End-NLP-Text-Summarization-with-Hugging-Face-Transformers/blob/main/data/summarizer-data.zip
+  local_data_file: artifacts/data_ingestion/data.zip
+  unzip_dir: artifacts/data_ingestion
+
+data_transformation:
+  root_dir: artifacts/data_transformation
+  data_path: artifacts/data_ingestion/sumsum_dataset
+  tokenizer_name: google/pegasus-cnn-dailymail
+
+model_trainer:
+  root_dir: artifacts/model_trainer
+  data_path: artifacts/data_transformation/sumsum_dataset
+  model_ckpt: google/pegasus-cnn-dailymail
+
+model_evaluation:
+  root_dir: artifacts/model_evaluation
+  data_path: artifacts/data_transformation/sumsum_dataset
+  model_path: artifacts/model_trainer/pegasus-samsum-model
+  tokenizer_path: artifacts/model_trainer/tokenizer
+  model_path: artifacts/model_evaluation/metrics.csv
