@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: textSummarizer
+Version: 0.0.0
+Summary: A small python package for NLP app
+Home-page: https://github.com/mdzaheerjk/End-to-End-NLP-Text-Summarization-with-Hugging-Face-Transformers
+Author: mdzaheerjk
+Author-email: mdzaheerjk@gmail.com
+Project-URL: Bug Tracker, https://github.com/mdzaheerjk/End-to-End-NLP-Text-Summarization-with-Hugging-Face-Transformers/issues
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: summary
+
+# End-to-End-NLP-Text-Summarization-with-Hugging-Face-Transformers
+Develop a complete text summarization system from scratch, focusing on summarizing complex dialogues using the SAMSum dataset. This project emphasizes professional NLP pipelines, fine-tuning state-of-the-art models like Google Pegasus, and implementing modular Python code for maintainability and scalability.
+
+
+## Project Preview
+
+<p align="center">
+  <img src="https://d14omfvx1qlabb.cloudfront.net/krishnaik.in/media/project_banners/Gemini_Generated_Image_txdwpstxdwpstxdw.jpg"
+       alt="Project Preview"
+       width="600" />
+</p>
+
+## System Architecture
+
+<p align="center">
+  <img src="https://d14omfvx1qlabb.cloudfront.net/krishnaik.in/media/project_architecture_diagrams/Gemini_Generated_Image_z01q0dz01q0dz01q.jpg"
+       alt="System Architecture"
+       width="600" />
+</p>
+

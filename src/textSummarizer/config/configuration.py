@@ -22,7 +22,7 @@ class ConfigurationManager:
         )
         return data_ingestion_config
     
-    def get_data_transformation(self)->DataTransformationConfig:
+    def get_data_transformation_config(self)->DataTransformationConfig:
         config=self.config.data_transformation
         
         create_directories([config.root_dir])
@@ -33,6 +33,9 @@ class ConfigurationManager:
             tokenizer_name=config.tokenizer_name
         )
         return data_transformation_config
+
+    def get_data_transformation(self)->DataTransformationConfig:
+        return self.get_data_transformation_config()
     
     def get_model_trainer_config(self)->ModelTrainerConfig:
         config=self.config.model_trainer
@@ -47,10 +50,10 @@ class ConfigurationManager:
             num_train_epochs=params.num_train_epochs,
             warmup_steps=params.warmup_steps,
             per_device_train_batch_size=params.per_device_train_batch_size,
-            weight_decay=params.weights_decay,
+            weight_decay=params.weight_decay,
             logging_steps=params.logging_steps,
-            evaluation_strategy=params.evaluation_strategy,
-            eval_steps=params.evaluation_strategy,
+            eval_strategy=params.eval_strategy,
+            eval_steps=params.eval_steps,
             save_steps=params.save_steps,
             gradient_accumulation_steps=params.gradient_accumulation_steps
         )

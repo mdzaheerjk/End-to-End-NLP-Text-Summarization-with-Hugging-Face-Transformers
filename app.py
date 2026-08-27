@@ -19,12 +19,13 @@ async def index():
 async def training():
     try:
         os.system("python main.py")
+        return Response("Training successful !!")
     except Exception as e:
-        return Response(f"Error occured! {e}")
+        return Response(f"Error occurred! {e}")
 
 
 @app.post("/predict")
-async def predict_route(text):
+async def predict_route(text: str):
     try:
         obj=PredictionPipeline()
         text=obj.predict(text)

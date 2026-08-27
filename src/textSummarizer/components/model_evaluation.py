@@ -34,7 +34,7 @@ class ModelEvaluation:
                                clean_up_tokenization_spaces=True)
                 for s in summaries]
 
-            decoded_summaries=[d.replace(""," ") for d in decoded_summaries]
+            decoded_summaries=[d.replace("<n>"," ") for d in decoded_summaries]
 
             metric.add_batch(predictions=decoded_summaries,references=target_batch)
 
@@ -48,13 +48,13 @@ class ModelEvaluation:
 
         dataset_samsum_pt=load_from_disk(self.config.data_path)
 
-        rogue_names=["rouge1", "rouge2", "rougeL", "rougeLsum"]
-        rouge_metric=evaluate.load('rogue')
+        rouge_names=["rouge1", "rouge2", "rougeL", "rougeLsum"]
+        rouge_metric=evaluate.load('rouge')
 
         score=self.calculate_metric_on_test_ds(
             dataset_samsum_pt['test'][0:10],rouge_metric,model_pegasus,tokenizer,batch_size=2,column_text='dialogue',column_summary='summary'
         )
-        rogue_dict={rn : score[rn] for rn in rogue_names}
+        rouge_dict={rn : score[rn] for rn in rouge_names}
 
-        df=pd.DataFrame(rogue_dict,index=['pegasus'])
-        df.to_csv(self.config.metric_file_path,index=False)
+        df=pd.DataFrame(rouge_dict,index=['pegasus'])
+        df.to_csv(self.config.metric_file_name,index=False)
