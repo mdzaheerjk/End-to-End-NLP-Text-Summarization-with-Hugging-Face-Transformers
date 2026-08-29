@@ -11,15 +11,19 @@ class ModelTrainer:
         self.config = config
 
     def train(self):
+        import gc
+        gc.collect()
         os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
+        use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
+
         tokenizer = AutoTokenizer.from_pretrained(self.config.model_ckpt)
         model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(
             self.config.model_ckpt,
-            torch_dtype=torch.float16 if device == "cuda" else torch.float32
+            torch_dtype=torch.bfloat16 if use_bf16 else torch.float32
         ).to(device)
         seq2seq_data_collator = DataCollatorForSeq2Seq(tokenizer, model=model_pegasus)
 
@@ -37,9 +41,11 @@ class ModelTrainer:
             eval_steps=self.config.eval_steps,
             save_steps=int(float(self.config.save_steps)),
             gradient_accumulation_steps=self.config.gradient_accumulation_steps,
-            fp16=True if device == "cuda" else False,
+            bf16=use_bf16,
+            fp16=False,
             optim="adafactor",
             gradient_checkpointing=True,
+            gradient_checkpointing_kwargs={"use_reentrant": False},
             report_to="none"
         )
         trainer = Trainer(
