@@ -1,0 +1,10 @@
+artifacts/
+logs/
+*.log
+*.safetensors
+*.bin
+*.pt
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
