@@ -1,10 +1,81 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ========================
+# Virtual Environments
+# ========================
+.venv/
+venv/
+env/
+ENV/
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# Environment & Secrets
+# ========================
+.env
+.env.local
+.env.production
+
+# ========================
+# Model Weights & Artifacts
+# ========================
 artifacts/
-logs/
-*.log
 *.safetensors
 *.bin
 *.pt
-__pycache__/
-*.py[cod]
+*.ckpt
+*.h5
+
+# ========================
+# Logs
+# ========================
+logs/
+*.log
+
+# ========================
+# Jupyter Notebooks Caches
+# ========================
 .ipynb_checkpoints/
-*.egg-info/
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Pytest / Testing
+# ========================
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ========================
+# Docker
+# ========================
+docker-compose.override.yml
+
+# ========================
+# Data (large files)
+# ========================
+data/*.zip

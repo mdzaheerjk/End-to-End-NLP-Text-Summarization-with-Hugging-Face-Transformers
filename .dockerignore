@@ -1,0 +1,47 @@
+# Version control
+.git
+.gitignore
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+
+# Research notebooks
+research/
+
+# Raw data archives
+data/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Logs (generated at runtime)
+logs/
+
+# Documentation & guides
+*.md
+!README.md
+production/
+Interview Questions/
+presentation/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+htmlcov/
+tests/
