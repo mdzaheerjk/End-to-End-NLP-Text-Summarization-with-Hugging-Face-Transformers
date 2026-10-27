@@ -1,81 +1,118 @@
-# ========================
-# Python
-# ========================
+# ==============================================================================
+# SummarizeAI — Production Git Ignore Specification
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-*.egg-info/
-*.egg
-dist/
+
+# C extensions
+*.c
+
+# Distribution / packaging
 build/
+dist/
+downloads/
+eggs/
 .eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# ========================
-# Virtual Environments
-# ========================
+# Virtual environments
+.env/
 .venv/
-venv/
 env/
+venv/
 ENV/
+env.bak/
+venv.bak/
 
-# ========================
-# IDE / Editor
-# ========================
+# Environment variables & secrets (CRITICAL: never commit credentials)
+.env
+.env.*
+!.env.example
+
+# IDEs & Editor configurations
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 *.swp
 *.swo
 *~
+.project
+.pydevproject
+.settings/
 
-# ========================
-# Environment & Secrets
-# ========================
-.env
-.env.local
-.env.production
-
-# ========================
-# Model Weights & Artifacts
-# ========================
+# Model Weights, Large Artifacts & Checkpoints
 artifacts/
 *.safetensors
 *.bin
 *.pt
+*.pth
 *.ckpt
 *.h5
+*.onnx
+*.tflite
+*.joblib
+*.pkl
 
-# ========================
-# Logs
-# ========================
+# Training Data & Datasets
+data/
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.arrow
+*.parquet
+
+# Execution Logs & Diagnostics
 logs/
 *.log
+*.log.*
 
-# ========================
-# Jupyter Notebooks Caches
-# ========================
+# Jupyter Notebook checkpoints & autosaves
 .ipynb_checkpoints/
+*-checkpoint.ipynb
 
-# ========================
-# OS Files
-# ========================
+# Unit Test, Pytest & Coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+htmlcov/
+
+# Operating System files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# ========================
-# Pytest / Testing
-# ========================
-.pytest_cache/
-htmlcov/
-.coverage
-
-# ========================
-# Docker
-# ========================
-docker-compose.override.yml
-
-# ========================
-# Data (large files)
-# ========================
-data/*.zip
+# Temporary files & swap
+*.tmp
+*.temp
+*.bak
