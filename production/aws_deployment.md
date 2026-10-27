@@ -18,16 +18,16 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    AWS Deployment Options                   │
-├──────────────┬───────────────────┬──────────────────────────┤
-│   EC2 + Nginx │  ECR + ECS Fargate │      App Runner        │
-│  (Full Control)│ (Serverless Containers)│ (Fully Managed)   │
-├──────────────┼───────────────────┼──────────────────────────┤
-│ Manual scaling │  Auto-scaling      │  Auto-scaling         │
-│ SSL via Certbot│  ALB + ACM SSL     │  Built-in SSL         │
-│ Lowest cost    │  Pay-per-task      │  Pay-per-request      │
-│ Most control   │  Production-grade  │  Simplest setup       │
-└──────────────┴───────────────────┴──────────────────────────┘
+│                    AWS Deployment Options                     │
+├──────────────┬───────────────────┬───────────────────────────┤
+│   EC2 + Nginx │  ECR + ECS Fargate │      App Runner          │
+│  (Full Control)│ (Serverless Containers)│ (Fully Managed)       │
+├──────────────┼───────────────────┼───────────────────────────┤
+│ Manual scaling │  Auto-scaling      │  Auto-scaling            │
+│ SSL via Certbot│  ALB + ACM SSL     │  Built-in SSL            │
+│ Lowest cost    │  Pay-per-task      │  Pay-per-request         │
+│ Most control   │  Production-grade  │  Simplest setup          │
+└──────────────┴───────────────────┴───────────────────────────┘
 ```
 
 ---
@@ -85,8 +85,11 @@ git clone https://github.com/mdzaheerjk/End-to-End-NLP-Text-Summarization-with-H
 cd End-to-End-NLP-Text-Summarization-with-Hugging-Face-Transformers
 cp .env.example .env
 # Edit .env with production values
-docker build -t summarize-ai:latest .
 docker run -d --name summarize-ai -p 8000:8000 --env-file .env --restart unless-stopped summarize-ai:latest
+
+# Verify health and model initialization
+curl -i http://localhost:8000/health
+curl -s http://localhost:8000/diagnostics | python -m json.tool
 ```
 
 ### Step 4: Nginx Reverse Proxy Configuration
@@ -96,6 +99,7 @@ docker run -d --name summarize-ai -p 8000:8000 --env-file .env --restart unless-
 server {
     listen 80;
     server_name your-domain.com;
+    client_max_body_size 10M;
 
     location / {
         proxy_pass http://127.0.0.1:8000;
@@ -110,6 +114,10 @@ server {
     location /health {
         proxy_pass http://127.0.0.1:8000/health;
         access_log off;
+    }
+
+    location /diagnostics {
+        proxy_pass http://127.0.0.1:8000/diagnostics;
     }
 }
 ```

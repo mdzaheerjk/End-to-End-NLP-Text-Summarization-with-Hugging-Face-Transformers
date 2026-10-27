@@ -20,7 +20,7 @@
 
 - Docker Engine ≥ 24.0 (or Docker Desktop)
 - `.env` file copied from `.env.example` and configured
-- Model artifacts available in `artifacts/` directory (or HuggingFace Hub fallback enabled)
+- Model weights: Loads from `artifacts/` if mounted, or streams `google/pegasus-cnn_dailymail` from Hugging Face Hub during container startup pre-warming
 
 ---
 
@@ -53,8 +53,17 @@ docker run -d \
   --env-file .env \
   summarize-ai:latest
 
-# Verify health
-curl http://localhost:8000/health
+# Verify health probe
+curl -i http://localhost:8000/health
+# Response: {"status":"healthy","service":"SummarizeAI","model_loaded":true}
+
+# Verify hardware & model diagnostics
+curl -s http://localhost:8000/diagnostics | python -m json.tool
+
+# Smoke test prediction endpoint
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Hannah: Hey, do you have Betty'\''s number?\nAmanda: Lemme check... Yup, here it is: 555-019-2834"}'
 ```
 
 ---

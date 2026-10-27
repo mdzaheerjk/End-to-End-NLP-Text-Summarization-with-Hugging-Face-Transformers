@@ -386,9 +386,11 @@ curl -X POST http://localhost:8000/predict \
 
 | Resource | Description |
 |---|---|
-| [`production/docker_deployment.md`](production/docker_deployment.md) | Docker build, run, compose & security |
-| [`production/huggingface_cloud_deployment.md`](production/huggingface_cloud_deployment.md) | HuggingFace Spaces, Streamlit Cloud, Render |
-| [`production/aws_deployment.md`](production/aws_deployment.md) | EC2, ECS Fargate, App Runner architectures |
+| [`production/README.md`](production/README.md) | Multi-cloud deployment operations & decision hub |
+| [`production/render_deployment.md`](production/render_deployment.md) | Render 1-click Blueprint & Dashboard deployment guide |
+| [`production/huggingface_cloud_deployment.md`](production/huggingface_cloud_deployment.md) | HuggingFace Spaces, Streamlit Cloud & PaaS |
+| [`production/docker_deployment.md`](production/docker_deployment.md) | Docker build, run, compose, reverse proxy & security |
+| [`production/aws_deployment.md`](production/aws_deployment.md) | EC2, ECS Fargate & App Runner architectures |
 | [`Interview Questions/Interview_Questions.md`](Interview%20Questions/Interview_Questions.md) | 50 Production-Grade AI/ML interview Q&A |
 | [`presentation/ppt_generation_prompt.md`](presentation/ppt_generation_prompt.md) | 12-slide executive presentation prompt |
 | [`research/`](research/) | Jupyter experiment notebooks |
